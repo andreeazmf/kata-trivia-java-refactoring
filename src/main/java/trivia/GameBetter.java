@@ -73,41 +73,69 @@ public class GameBetter implements IGame {
     }
 
     public void roll(int roll) {
-        System.out.println(players.get(currentPlayer) + " is the current player");
-        System.out.println("They have rolled a " + roll);
+        logCurrentPlayer();
+        logRoll(roll);
 
         if (inPenaltyBox[currentPlayer]) {
-            if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
-
-                System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > PLACE_COUNT - 1)
-                    places[currentPlayer] = places[currentPlayer] - PLACE_COUNT;
-
-                System.out.println(players.get(currentPlayer)
-                        + "'s new location is "
-                        + places[currentPlayer]);
-                System.out.println("The category is " + currentCategory());
-                askQuestion();
-            } else {
-                System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
+            if (isEven(roll)) {
                 isGettingOutOfPenaltyBox = false;
+                logNotGettingOutOfPenaltyBox();
+                return;
             }
 
-        } else {
-
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > PLACE_COUNT - 1)
-                places[currentPlayer] = places[currentPlayer] - PLACE_COUNT;
-
-            System.out.println(players.get(currentPlayer)
-                    + "'s new location is "
-                    + places[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
-            askQuestion();
+            isGettingOutOfPenaltyBox = true;
+            logGettingOutOfPenaltyBox();
         }
 
+        executeRoll(roll);
+    }
+
+    private void executeRoll(int roll) {
+        moveCurrentPlayer(roll);
+        askQuestion();
+    }
+
+    private void logCurrentPlayer() {
+        System.out.println(players.get(currentPlayer) + " is the current player");
+    }
+
+    private void logRoll(int roll) {
+        System.out.println("They have rolled a " + roll);
+    }
+
+    private void logGettingOutOfPenaltyBox() {
+        System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+    }
+
+    private void logNotGettingOutOfPenaltyBox() {
+        System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
+    }
+
+    private void logNewLocation() {
+        System.out.println(players.get(currentPlayer)
+                + "'s new location is "
+                + places[currentPlayer]);
+    }
+
+    private void logCurrentCategory() {
+        System.out.println("The category is " + currentCategory());
+    }
+
+    private boolean isOdd(int roll) {
+        return roll % 2 != 0;
+    }
+
+    private boolean isEven(int roll) {
+        return roll % 2 == 0;
+    }
+
+    private void moveCurrentPlayer(int roll) {
+        places[currentPlayer] = places[currentPlayer] + roll;
+        if (places[currentPlayer] > PLACE_COUNT - 1)
+            places[currentPlayer] = places[currentPlayer] - PLACE_COUNT;
+
+        logNewLocation();
+        logCurrentCategory();
     }
 
     private void askQuestion() {
@@ -124,7 +152,6 @@ public class GameBetter implements IGame {
             System.out.println(rockQuestions.removeFirst());
         }
     }
-
 
     private String currentCategory() {
         int questionOrder = places[currentPlayer] % QuestionCategory.values().length;
