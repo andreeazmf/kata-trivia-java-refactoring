@@ -64,9 +64,14 @@ public class GameBetter implements IGame {
         purses[howManyPlayers()] = 0;
         inPenaltyBox[howManyPlayers()] = false;
 
+        logNewPlayer(playerName);
+
+        return true;
+    }
+
+    private void logNewPlayer(String playerName) {
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
-        return true;
     }
 
     public int howManyPlayers() {
@@ -206,12 +211,22 @@ public class GameBetter implements IGame {
     }
 
     public boolean wrongAnswer() {
-        System.out.println("Question was incorrectly answered");
-        System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
+        logWrongAnswer();
+        logPlayerSentToPentaltyBox();
+
         inPenaltyBox[currentPlayer] = true;
 
         goToNextPlayer();
+
         return true;
+    }
+
+    private void logPlayerSentToPentaltyBox() {
+        System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
+    }
+
+    private void logWrongAnswer() {
+        System.out.println("Question was incorrectly answered");
     }
 
     private boolean isNotWinner() {
