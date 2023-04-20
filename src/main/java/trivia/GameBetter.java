@@ -8,6 +8,7 @@ import static trivia.constants.GameConstants.MAX_PLAYER_COUNT;
 import static trivia.constants.GameConstants.MIN_PLAYER_COUNT;
 import static trivia.constants.GameConstants.PLACE_COUNT;
 import static trivia.constants.GameConstants.QUESTION_COUNT;
+import static trivia.constants.GameConstants.WINNING_SCORE;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
@@ -169,41 +170,38 @@ public class GameBetter implements IGame {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer]) {
-            if (isGettingOutOfPenaltyBox) {
-                System.out.println("Answer was correct!!!!");
-                purses[currentPlayer]++;
-                System.out.println(players.get(currentPlayer)
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.");
+        if (inPenaltyBox[currentPlayer] && !isGettingOutOfPenaltyBox) {
+            goToNextPlayer();
+            return true;
+        }
 
-                boolean winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+        logCorrectAnswer();
 
-                return winner;
-            } else {
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
-                return true;
-            }
+        purses[currentPlayer]++;
+        logCurrentPlayerCoins();
 
+        boolean isNotWinner = isNotWinner();
 
-        } else {
+        goToNextPlayer();
 
-            System.out.println("Answer was corrent!!!!");
-            purses[currentPlayer]++;
-            System.out.println(players.get(currentPlayer)
-                    + " now has "
-                    + purses[currentPlayer]
-                    + " Gold Coins.");
+        return isNotWinner;
+    }
 
-            boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+    private void logCurrentPlayerCoins() {
+        System.out.println(players.get(currentPlayer)
+                + " now has "
+                + purses[currentPlayer]
+                + " Gold Coins.");
+    }
 
-            return winner;
+    private void logCorrectAnswer() {
+        System.out.println("Answer was correct!!!!");
+    }
+
+    private void goToNextPlayer() {
+        currentPlayer++;
+        if (currentPlayer == players.size()) {
+            currentPlayer = 0;
         }
     }
 
@@ -212,13 +210,15 @@ public class GameBetter implements IGame {
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
 
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
+        goToNextPlayer();
         return true;
     }
 
+    private boolean isNotWinner() {
+        return !isWinner();
+    }
 
-    private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == MAX_PLAYER_COUNT);
+    private boolean isWinner() {
+        return purses[currentPlayer] == WINNING_SCORE;
     }
 }
