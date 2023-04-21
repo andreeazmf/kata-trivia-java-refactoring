@@ -12,18 +12,19 @@ import static trivia.constants.GameConstants.WINNING_SCORE;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
-    List<String> players = new ArrayList<>();
-    int[] places = new int[MAX_PLAYER_COUNT];
-    int[] purses = new int[MAX_PLAYER_COUNT];
-    boolean[] inPenaltyBox = new boolean[MAX_PLAYER_COUNT];
 
-    LinkedList<String> popQuestions = new LinkedList<>();
-    LinkedList<String> scienceQuestions = new LinkedList<>();
-    LinkedList<String> sportsQuestions = new LinkedList<>();
-    LinkedList<String> rockQuestions = new LinkedList<>();
+    private final List<String> players = new ArrayList<>();
+    private final int[] places = new int[MAX_PLAYER_COUNT];
+    private final int[] purses = new int[MAX_PLAYER_COUNT];
+    private final boolean[] inPenaltyBox = new boolean[MAX_PLAYER_COUNT];
 
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
+    private final LinkedList<String> popQuestions = new LinkedList<>();
+    private final LinkedList<String> scienceQuestions = new LinkedList<>();
+    private final LinkedList<String> sportsQuestions = new LinkedList<>();
+    private final LinkedList<String> rockQuestions = new LinkedList<>();
+
+    private int currentPlayer = 0;
+    private boolean isGettingOutOfPenaltyBox;
 
     public GameBetter() {
         for (int i = 0; i < QUESTION_COUNT; i++) {
@@ -32,30 +33,6 @@ public class GameBetter implements IGame {
             sportsQuestions.add(createSportsQuestion(i));
             rockQuestions.add(createRockQuestion(i));
         }
-    }
-
-    private String createPopQuestion(int index) {
-        return createQuestion(QuestionCategory.POP, index);
-    }
-
-    private String createScienceQuestion(int index) {
-        return createQuestion(QuestionCategory.SCIENCE, index);
-    }
-
-    private String createSportsQuestion(int index) {
-        return createQuestion(QuestionCategory.SPORTS, index);
-    }
-
-    public String createRockQuestion(int index) {
-        return createQuestion(QuestionCategory.ROCK, index);
-    }
-
-    public String createQuestion(QuestionCategory questionCategory, int index) {
-        return questionCategory.getValue() + " Question " + index;
-    }
-
-    public boolean isPlayable() {
-        return (howManyPlayers() >= MIN_PLAYER_COUNT);
     }
 
     public boolean add(String playerName) {
@@ -67,15 +44,6 @@ public class GameBetter implements IGame {
         logNewPlayer(playerName);
 
         return true;
-    }
-
-    private void logNewPlayer(String playerName) {
-        System.out.println(playerName + " was added");
-        System.out.println("They are player number " + players.size());
-    }
-
-    public int howManyPlayers() {
-        return players.size();
     }
 
     public void roll(int roll) {
@@ -96,35 +64,66 @@ public class GameBetter implements IGame {
         executeRoll(roll);
     }
 
+    public boolean wasCorrectlyAnswered() {
+        if (inPenaltyBox[currentPlayer] && !isGettingOutOfPenaltyBox) {
+            goToNextPlayer();
+            return true;
+        }
+
+        logCorrectAnswer();
+
+        purses[currentPlayer]++;
+        logCurrentPlayerCoins();
+
+        boolean isNotWinner = isNotWinner();
+
+        goToNextPlayer();
+
+        return isNotWinner;
+    }
+
+    public boolean wrongAnswer() {
+        logWrongAnswer();
+        logPlayerSentToPenaltyBox();
+
+        inPenaltyBox[currentPlayer] = true;
+
+        goToNextPlayer();
+
+        return true;
+    }
+
+    public boolean isPlayable() {
+        return (howManyPlayers() >= MIN_PLAYER_COUNT);
+    }
+
+    private String createPopQuestion(int index) {
+        return createQuestion(QuestionCategory.POP, index);
+    }
+
+    private String createScienceQuestion(int index) {
+        return createQuestion(QuestionCategory.SCIENCE, index);
+    }
+
+    private String createSportsQuestion(int index) {
+        return createQuestion(QuestionCategory.SPORTS, index);
+    }
+
+    private String createRockQuestion(int index) {
+        return createQuestion(QuestionCategory.ROCK, index);
+    }
+
+    private String createQuestion(QuestionCategory questionCategory, int index) {
+        return questionCategory.getValue() + " Question " + index;
+    }
+
+    private int howManyPlayers() {
+        return players.size();
+    }
+
     private void executeRoll(int roll) {
         moveCurrentPlayer(roll);
         askQuestion();
-    }
-
-    private void logCurrentPlayer() {
-        System.out.println(players.get(currentPlayer) + " is the current player");
-    }
-
-    private void logRoll(int roll) {
-        System.out.println("They have rolled a " + roll);
-    }
-
-    private void logGettingOutOfPenaltyBox() {
-        System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-    }
-
-    private void logNotGettingOutOfPenaltyBox() {
-        System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
-    }
-
-    private void logNewLocation() {
-        System.out.println(players.get(currentPlayer)
-                + "'s new location is "
-                + places[currentPlayer]);
-    }
-
-    private void logCurrentCategory() {
-        System.out.println("The category is " + currentCategory());
     }
 
     private boolean isOdd(int roll) {
@@ -174,22 +173,50 @@ public class GameBetter implements IGame {
         }
     }
 
-    public boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer] && !isGettingOutOfPenaltyBox) {
-            goToNextPlayer();
-            return true;
+    private void goToNextPlayer() {
+        currentPlayer++;
+        if (currentPlayer == players.size()) {
+            currentPlayer = 0;
         }
+    }
 
-        logCorrectAnswer();
+    private boolean isNotWinner() {
+        return !isWinner();
+    }
 
-        purses[currentPlayer]++;
-        logCurrentPlayerCoins();
+    private boolean isWinner() {
+        return purses[currentPlayer] == WINNING_SCORE;
+    }
 
-        boolean isNotWinner = isNotWinner();
+    private void logNewPlayer(String playerName) {
+        System.out.println(playerName + " was added");
+        System.out.println("They are player number " + players.size());
+    }
 
-        goToNextPlayer();
+    private void logCurrentPlayer() {
+        System.out.println(players.get(currentPlayer) + " is the current player");
+    }
 
-        return isNotWinner;
+    private void logRoll(int roll) {
+        System.out.println("They have rolled a " + roll);
+    }
+
+    private void logGettingOutOfPenaltyBox() {
+        System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+    }
+
+    private void logNotGettingOutOfPenaltyBox() {
+        System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
+    }
+
+    private void logNewLocation() {
+        System.out.println(players.get(currentPlayer)
+                + "'s new location is "
+                + places[currentPlayer]);
+    }
+
+    private void logCurrentCategory() {
+        System.out.println("The category is " + currentCategory());
     }
 
     private void logCurrentPlayerCoins() {
@@ -203,37 +230,11 @@ public class GameBetter implements IGame {
         System.out.println("Answer was correct!!!!");
     }
 
-    private void goToNextPlayer() {
-        currentPlayer++;
-        if (currentPlayer == players.size()) {
-            currentPlayer = 0;
-        }
-    }
-
-    public boolean wrongAnswer() {
-        logWrongAnswer();
-        logPlayerSentToPentaltyBox();
-
-        inPenaltyBox[currentPlayer] = true;
-
-        goToNextPlayer();
-
-        return true;
-    }
-
-    private void logPlayerSentToPentaltyBox() {
+    private void logPlayerSentToPenaltyBox() {
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
     }
 
     private void logWrongAnswer() {
         System.out.println("Question was incorrectly answered");
-    }
-
-    private boolean isNotWinner() {
-        return !isWinner();
-    }
-
-    private boolean isWinner() {
-        return purses[currentPlayer] == WINNING_SCORE;
     }
 }
