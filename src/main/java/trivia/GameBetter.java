@@ -1,7 +1,9 @@
 package trivia;
 
+import trivia.question.QuestionCategory;
+import trivia.question.QuestionDealer;
+
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static trivia.constants.GameConstants.MIN_PLAYER_COUNT;
@@ -14,21 +16,13 @@ public class GameBetter implements IGame {
 
     private final List<Player> players = new ArrayList<>();
 
-    private final LinkedList<String> popQuestions = new LinkedList<>();
-    private final LinkedList<String> scienceQuestions = new LinkedList<>();
-    private final LinkedList<String> sportsQuestions = new LinkedList<>();
-    private final LinkedList<String> rockQuestions = new LinkedList<>();
+    private final QuestionDealer questionDealer;
 
     private int currentPlayerIndex = 0;
     private boolean isGettingOutOfPenaltyBox;
 
     public GameBetter() {
-        for (int i = 0; i < QUESTION_COUNT; i++) {
-            popQuestions.add(createPopQuestion(i));
-            scienceQuestions.add(createScienceQuestion(i));
-            sportsQuestions.add(createSportsQuestion(i));
-            rockQuestions.add(createRockQuestion(i));
-        }
+        questionDealer = QuestionDealer.init(QUESTION_COUNT);
     }
 
     public boolean add(String playerName) {
@@ -93,26 +87,6 @@ public class GameBetter implements IGame {
         return players.get(currentPlayerIndex);
     }
 
-    private String createPopQuestion(int index) {
-        return createQuestion(QuestionCategory.POP, index);
-    }
-
-    private String createScienceQuestion(int index) {
-        return createQuestion(QuestionCategory.SCIENCE, index);
-    }
-
-    private String createSportsQuestion(int index) {
-        return createQuestion(QuestionCategory.SPORTS, index);
-    }
-
-    private String createRockQuestion(int index) {
-        return createQuestion(QuestionCategory.ROCK, index);
-    }
-
-    private String createQuestion(QuestionCategory questionCategory, int index) {
-        return questionCategory.getValue() + " Question " + index;
-    }
-
     private int howManyPlayers() {
         return players.size();
     }
@@ -138,32 +112,21 @@ public class GameBetter implements IGame {
     }
 
     private void askQuestion() {
-        if (QuestionCategory.POP.getValue().equals(currentCategory())) {
-            System.out.println(popQuestions.removeFirst());
-        }
-        if (QuestionCategory.SCIENCE.getValue().equals(currentCategory())) {
-            System.out.println(scienceQuestions.removeFirst());
-        }
-        if (QuestionCategory.SPORTS.getValue().equals(currentCategory())) {
-            System.out.println(sportsQuestions.removeFirst());
-        }
-        if (QuestionCategory.ROCK.getValue().equals(currentCategory())) {
-            System.out.println(rockQuestions.removeFirst());
-        }
+        questionDealer.askQuestion(currentCategory());
     }
 
-    private String currentCategory() {
+    private QuestionCategory currentCategory() {
         int questionOrder = currentPlayer().getPlace() % QuestionCategory.values().length;
 
         switch (questionOrder) {
             case 0:
-                return QuestionCategory.POP.getValue();
+                return QuestionCategory.POP;
             case 1:
-                return QuestionCategory.SCIENCE.getValue();
+                return QuestionCategory.SCIENCE;
             case 2:
-                return QuestionCategory.SPORTS.getValue();
+                return QuestionCategory.SPORTS;
             default:
-                return QuestionCategory.ROCK.getValue();
+                return QuestionCategory.ROCK;
         }
     }
 
@@ -210,7 +173,7 @@ public class GameBetter implements IGame {
     }
 
     private void logCurrentCategory() {
-        System.out.println("The category is " + currentCategory());
+        System.out.println("The category is " + currentCategory().getValue());
     }
 
     private void logCurrentPlayerCoins() {
