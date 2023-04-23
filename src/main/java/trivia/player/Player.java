@@ -26,9 +26,10 @@ public class Player {
         logNewLocation();
     }
 
-    public void moveToPenaltyBox() {
+    public void sendToPenaltyBox() {
         isInPenaltyBox = true;
         isGettingOutOfPenaltyBox = false;
+        logSendToPenaltyBox();
     }
 
     public void setIsGettingOutOfPenaltyBox() {
@@ -75,6 +76,10 @@ public class Player {
 
     private void logCoins() {
         log.info(name + " now has " + coins + " Gold Coins.");
+    }
+
+    private void logSendToPenaltyBox() {
+        log.info(name + " was sent to the penalty box");
     }
 
     private void logIsGettingOutOfPenaltyBox() {

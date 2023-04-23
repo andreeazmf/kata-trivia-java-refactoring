@@ -52,9 +52,8 @@ public class PlayerManager {
         logCurrentPlayerQuestionCategory();
     }
 
-    public void moveCurrentPlayerToPenaltyBox() {
-        players.get(currentPlayerIndex).moveToPenaltyBox();
-        logCurrentPlayerMovedToPenaltyBox();
+    public void sendCurrentPlayerToPenaltyBox() {
+        players.get(currentPlayerIndex).sendToPenaltyBox();
     }
 
     public void goToNextPlayer() {
@@ -98,10 +97,6 @@ public class PlayerManager {
     private void logNewPlayerAdded(String playerName) {
         log.info(playerName + " was added");
         log.info("They are player number " + players.size());
-    }
-
-    private void logCurrentPlayerMovedToPenaltyBox() {
-        log.info(getCurrentPlayerName() + " was sent to the penalty box");
     }
 
     private void logCurrentPlayerQuestionCategory() {
