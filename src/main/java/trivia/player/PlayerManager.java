@@ -64,18 +64,7 @@ public class PlayerManager {
     }
 
     public QuestionCategory getCurrentPlayerQuestionCategory() {
-        int questionOrder = players.get(currentPlayerIndex).getPlace() % QuestionCategory.values().length;
-
-        switch (questionOrder) {
-            case 0:
-                return QuestionCategory.POP;
-            case 1:
-                return QuestionCategory.SCIENCE;
-            case 2:
-                return QuestionCategory.SPORTS;
-            default:
-                return QuestionCategory.ROCK;
-        }
+        return players.get(currentPlayerIndex).getCurrentQuestionCategory();
     }
 
     public void currentPlayerObtainBenefits() {

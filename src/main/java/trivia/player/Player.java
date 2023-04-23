@@ -3,6 +3,7 @@ package trivia.player;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import trivia.question.QuestionCategory;
 
 import static trivia.constants.GameConstants.WINNING_SCORE;
 
@@ -50,6 +51,21 @@ public class Player {
         logSendToPenaltyBox();
     }
 
+    public QuestionCategory getCurrentQuestionCategory() {
+        int questionOrder = place % QuestionCategory.values().length;
+
+        switch (questionOrder) {
+            case 0:
+                return QuestionCategory.POP;
+            case 1:
+                return QuestionCategory.SCIENCE;
+            case 2:
+                return QuestionCategory.SPORTS;
+            default:
+                return QuestionCategory.ROCK;
+        }
+    }
+
     public void setIsGettingOutOfPenaltyBox() {
         if (isInPenaltyBox) {
             isGettingOutOfPenaltyBox = true;
@@ -67,14 +83,6 @@ public class Player {
         logIsNotGettingOutOfPenaltyBox();
     }
 
-    private void earnOneCoin() {
-        coins++;
-    }
-
-    private void earnTwoCoins() {
-        coins += 2;
-    }
-
     public boolean canObtainBenefits() {
         if (!isInPenaltyBox) {
             return true;
@@ -89,6 +97,15 @@ public class Player {
 
     public boolean isWinner() {
         return coins >= WINNING_SCORE;
+    }
+
+    private void earnOneCoin() {
+        coins++;
+        logCoins();
+    }
+
+    private void earnTwoCoins() {
+        coins += 2;
     }
 
     private void logNewLocation() {
