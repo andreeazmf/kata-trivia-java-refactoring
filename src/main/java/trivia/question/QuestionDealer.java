@@ -11,6 +11,7 @@ public class QuestionDealer {
     private final QuestionDeck scienceQuestions;
     private final QuestionDeck sportsQuestions;
     private final QuestionDeck rockQuestions;
+    private final QuestionDeck geographyQuestions;
 
     public static QuestionDealer init(int questionCount) {
         return QuestionDealer.builder()
@@ -18,6 +19,7 @@ public class QuestionDealer {
                 .scienceQuestions(QuestionDeck.createScienceQuestionDeck(questionCount))
                 .sportsQuestions(QuestionDeck.createSportsQuestionDeck(questionCount))
                 .rockQuestions(QuestionDeck.createRockQuestionDeck(questionCount))
+                .geographyQuestions(QuestionDeck.createGeographyQuestionDeck(questionCount))
                 .build();
     }
 

@@ -14,7 +14,8 @@ public enum QuestionCategory {
     POP(0, "Pop"),
     SCIENCE(1, "Science"),
     SPORTS(2, "Sports"),
-    ROCK(3, "Rock");
+    ROCK(3, "Rock"),
+    GEOGRAPHY(4, "Geography");
 
     private final int order;
     private final String value;
@@ -27,6 +28,7 @@ public enum QuestionCategory {
         questionConstructorsByCategory.put(SCIENCE, Question::createScienceQuestion);
         questionConstructorsByCategory.put(SPORTS, Question::createSportsQuestion);
         questionConstructorsByCategory.put(ROCK, Question::createRockQuestion);
+        questionConstructorsByCategory.put(GEOGRAPHY, Question::createGeographyQuestion);
     }
 
     public static IntFunction<Question> getQuestionConstructorByCategory(QuestionCategory questionCategory) {

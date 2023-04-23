@@ -2,8 +2,10 @@ package trivia.question;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class Question {
 
     private final QuestionCategory category;
@@ -23,6 +25,10 @@ public class Question {
 
     public static Question createRockQuestion(int index) {
         return createQuestion(QuestionCategory.ROCK, index);
+    }
+
+    public static Question createGeographyQuestion(int index) {
+        return createQuestion(QuestionCategory.GEOGRAPHY, index);
     }
 
     private static Question createQuestion(QuestionCategory questionCategory, int index) {

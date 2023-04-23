@@ -30,6 +30,10 @@ public class QuestionDeck {
         return createQuestionDeck(questionCount, QuestionCategory.ROCK);
     }
 
+    public static QuestionDeck createGeographyQuestionDeck(int questionCount) {
+        return createQuestionDeck(questionCount, QuestionCategory.GEOGRAPHY);
+    }
+
     private static QuestionDeck createQuestionDeck(int questionCount, QuestionCategory questionCategory) {
         return new QuestionDeck(
                 createQuestions(questionCount, QuestionCategory.getQuestionConstructorByCategory(questionCategory))
