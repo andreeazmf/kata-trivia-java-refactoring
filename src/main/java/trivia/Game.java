@@ -40,9 +40,9 @@ public class Game implements IGame {
 
 
         players.add(playerName);
-        places[howManyPlayers()] = 0;
-        purses[howManyPlayers()] = 0;
-        inPenaltyBox[howManyPlayers()] = false;
+        places[howManyPlayers() - 1] = 0;
+        purses[howManyPlayers() - 1] = 0;
+        inPenaltyBox[howManyPlayers() - 1] = false;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -60,6 +60,7 @@ public class Game implements IGame {
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
+                inPenaltyBox[currentPlayer] = false;
 
                 System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
                 places[currentPlayer] = places[currentPlayer] + roll;
