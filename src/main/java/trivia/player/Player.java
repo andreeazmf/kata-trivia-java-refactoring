@@ -2,11 +2,13 @@ package trivia.player;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static trivia.constants.GameConstants.WINNING_SCORE;
 
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
+@Slf4j
 public class Player {
 
     private final String name;
@@ -60,18 +62,18 @@ public class Player {
     }
 
     private void logNewLocation() {
-        System.out.println(name + "'s new location is " + place);
+        log.info(name + "'s new location is " + place);
     }
 
     private void logCoins() {
-        System.out.println(name + " now has " + coins + " Gold Coins.");
+        log.info(name + " now has " + coins + " Gold Coins.");
     }
 
     private void logIsGettingOutOfPenaltyBox() {
-        System.out.println(name + " is getting out of the penalty box");
+        log.info(name + " is getting out of the penalty box");
     }
 
     private void logIsNotGettingOutOfPenaltyBox() {
-        System.out.println(name + " is not getting out of the penalty box");
+        log.info(name + " is not getting out of the penalty box");
     }
 }

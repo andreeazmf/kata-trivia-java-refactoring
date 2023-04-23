@@ -1,5 +1,6 @@
 package trivia;
 
+import lombok.extern.slf4j.Slf4j;
 import trivia.player.PlayerManager;
 import trivia.question.QuestionDealer;
 
@@ -9,6 +10,7 @@ import static trivia.constants.GameConstants.PLACE_COUNT;
 import static trivia.constants.GameConstants.QUESTION_COUNT;
 
 // REFACTOR ME
+@Slf4j
 public class GameBetter implements IGame {
 
     private final PlayerManager playerManager;
@@ -79,19 +81,18 @@ public class GameBetter implements IGame {
     }
 
     private void logCurrentPlayer() {
-        System.out.println(playerManager.getCurrentPlayerName() + " is the current player");
+        log.info(playerManager.getCurrentPlayerName() + " is the current player");
     }
 
     private void logRoll(int roll) {
-        System.out.println("They have rolled a " + roll);
+        log.info("They have rolled a " + roll);
     }
 
     private void logCorrectAnswer() {
-        System.out.println("Answer was correct!!!!");
+        log.info("Answer was correct!!!!");
     }
-
-
+    
     private void logWrongAnswer() {
-        System.out.println("Question was incorrectly answered");
+        log.info("Question was incorrectly answered");
     }
 }

@@ -2,12 +2,14 @@ package trivia.player;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import trivia.question.QuestionCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class PlayerManager {
 
     private final List<Player> players = new ArrayList<>();
@@ -98,15 +100,15 @@ public class PlayerManager {
     }
 
     private void logNewPlayerAdded(String playerName) {
-        System.out.println(playerName + " was added");
-        System.out.println("They are player number " + players.size());
+        log.info(playerName + " was added");
+        log.info("They are player number " + players.size());
     }
 
     private void logCurrentPlayerMovedToPenaltyBox() {
-        System.out.println(getCurrentPlayerName() + " was sent to the penalty box");
+        log.info(getCurrentPlayerName() + " was sent to the penalty box");
     }
 
     private void logCurrentPlayerQuestionCategory() {
-        System.out.println("The category is " + getCurrentPlayerQuestionCategory().getValue());
+        log.info("The category is " + getCurrentPlayerQuestionCategory().getValue());
     }
 }
