@@ -42,14 +42,14 @@ public class GameBetter implements IGame {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (playerManager.canCurrentPlayEarnCoins()) {
+        if (!playerManager.canCurrentPlayerObtainBenefits()) {
             playerManager.goToNextPlayer();
             return true;
         }
 
         logCorrectAnswer();
 
-        playerManager.currentPlayerEarnsOneCoin();
+        playerManager.currentPlayerObtainBenefits();
 
         boolean isNotWinner = playerManager.isCurrentPlayerNotWinner();
 
@@ -91,7 +91,7 @@ public class GameBetter implements IGame {
     private void logCorrectAnswer() {
         log.info("Answer was correct!!!!");
     }
-    
+
     private void logWrongAnswer() {
         log.info("Question was incorrectly answered");
     }

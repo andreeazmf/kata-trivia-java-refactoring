@@ -17,9 +17,8 @@ public class Player {
     private boolean isInPenaltyBox;
     private boolean isGettingOutOfPenaltyBox;
 
-    public void earnOneCoin() {
-        coins++;
-        logCoins();
+    public void obtainBenefits() {
+        earnOneCoin();
     }
 
     public void move(int distance, int placeCount) {
@@ -49,8 +48,17 @@ public class Player {
         logIsNotGettingOutOfPenaltyBox();
     }
 
-    public boolean canEarnCoins() {
-        return isInPenaltyBox && !isGettingOutOfPenaltyBox;
+    private void earnOneCoin() {
+        coins++;
+        logCoins();
+    }
+
+    public boolean canObtainBenefits() {
+        if (!isInPenaltyBox) {
+            return true;
+        }
+
+        return isGettingOutOfPenaltyBox;
     }
 
     public boolean isNotWinner() {

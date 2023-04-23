@@ -79,8 +79,8 @@ public class PlayerManager {
         }
     }
 
-    public void currentPlayerEarnsOneCoin() {
-        players.get(currentPlayerIndex).earnOneCoin();
+    public void currentPlayerObtainBenefits() {
+        players.get(currentPlayerIndex).obtainBenefits();
     }
 
     public void setCurrentPlayerIsGettingOutOfPenaltyBox() {
@@ -91,8 +91,8 @@ public class PlayerManager {
         players.get(currentPlayerIndex).setIsNotGettingOutOfPenaltyBox();
     }
 
-    public boolean canCurrentPlayEarnCoins() {
-        return players.get(currentPlayerIndex).canEarnCoins();
+    public boolean canCurrentPlayerObtainBenefits() {
+        return players.get(currentPlayerIndex).canObtainBenefits();
     }
 
     private void logNewPlayerAdded(String playerName) {
