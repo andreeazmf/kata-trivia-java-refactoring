@@ -162,7 +162,33 @@ There is the `isPlayable()` method, but it is not used anywhere - not even in th
 
 Actually, `PlayGame` checks the number of players, but it lets the user use only 1 player.
 
-### 5. OOP-related problems
+### 5. Gameplay: player does not get out of penalty box
+
+If a player is in the penalty box and rolls an odd number, he/she can get out of the penalty box.
+
+The status of `isGettingOutOfPenaltyBox` is set to `true`, but the value in `inPenaltyBox` is not
+updated - so the player is actually still in the penalty box.
+
+In the test, player Sue has this behaviour:
+
+```
+...
+Sue is the current player
+They have rolled a 3
+Sue is getting out of the penalty box
+Sue's new location is 1
+The category is Science
+Science Question 3
+Answer was correct!!!!
+Sue now has 2 Gold Coins.
+...
+Sue is the current player
+They have rolled a 1
+Sue is getting out of the penalty box
+...
+```
+
+### 6. OOP-related problems
 
 - Encapsulation
     - all fields could be private (and some final);
