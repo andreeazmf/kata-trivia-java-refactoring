@@ -65,14 +65,14 @@ public class GameBetter implements IGame {
             return true;  // or throw error?
         }
 
-        if (playerManager.canCurrentPlayEarnCoins()) {
+        if (playerManager.canCurrentPlayerObtainBenefits()) {
             playerManager.goToNextPlayer();
             return true;
         }
 
         logCorrectAnswer();
 
-        playerManager.currentPlayerEarnsOneCoin();
+        playerManager.currentPlayerObtainBenefits();
 
         boolean isNotWinner = playerManager.isCurrentPlayerNotWinner();
 
