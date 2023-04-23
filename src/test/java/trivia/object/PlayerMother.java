@@ -1,4 +1,4 @@
-package trivia;
+package trivia.object;
 
 import trivia.player.Player;
 
@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 
 public class PlayerMother {
 
-    static List<Player> players(int count) {
+    public static List<Player> players(int count) {
         return IntStream.range(0, count)
                 .mapToObj(PlayerMother::player)
                 .collect(Collectors.toList());
@@ -24,7 +24,7 @@ public class PlayerMother {
         return "Player " + index;
     }
 
-    private static Player player(int index) {
+    public static Player player(int index) {
         return new Player(playerName(index));
     }
 }

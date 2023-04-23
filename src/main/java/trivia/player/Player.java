@@ -16,9 +16,18 @@ public class Player {
     private int coins;
     private boolean isInPenaltyBox;
     private boolean isGettingOutOfPenaltyBox;
+    private int winningStreak;
 
     public void obtainBenefits() {
-        earnOneCoin();
+        winningStreak++;
+
+        if (winningStreak <= 3) {
+            earnOneCoin();
+        } else {
+            earnTwoCoins();
+        }
+
+        logCoins();
     }
 
     public void move(int distance, int placeCount) {
@@ -26,9 +35,19 @@ public class Player {
         logNewLocation();
     }
 
-    public void moveToPenaltyBox() {
+    public void gaveWrongAnswer() {
+        if (winningStreak > 0) {
+            winningStreak = 0;
+            return;
+        }
+
+        sendToPenaltyBox();
+    }
+
+    public void sendToPenaltyBox() {
         isInPenaltyBox = true;
         isGettingOutOfPenaltyBox = false;
+        logSentToPenaltyBox();
     }
 
     public void setIsGettingOutOfPenaltyBox() {
@@ -50,7 +69,10 @@ public class Player {
 
     private void earnOneCoin() {
         coins++;
-        logCoins();
+    }
+
+    private void earnTwoCoins() {
+        coins += 2;
     }
 
     public boolean canObtainBenefits() {
@@ -65,8 +87,8 @@ public class Player {
         return !isWinner();
     }
 
-    private boolean isWinner() {
-        return coins == WINNING_SCORE;
+    public boolean isWinner() {
+        return coins >= WINNING_SCORE;
     }
 
     private void logNewLocation() {
@@ -75,6 +97,10 @@ public class Player {
 
     private void logCoins() {
         log.info(name + " now has " + coins + " Gold Coins.");
+    }
+
+    private void logSentToPenaltyBox() {
+        log.info(name + " was sent to the penalty box");
     }
 
     private void logIsGettingOutOfPenaltyBox() {

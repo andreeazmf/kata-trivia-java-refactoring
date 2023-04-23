@@ -89,7 +89,7 @@ public class GameBetter implements IGame {
 
         logWrongAnswer();
 
-        playerManager.moveCurrentPlayerToPenaltyBox();
+        playerManager.currentPlayerGaveWrongAnswer();
         playerManager.goToNextPlayer();
 
         return true;

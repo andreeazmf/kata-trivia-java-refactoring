@@ -3,10 +3,10 @@ package trivia.player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static trivia.PlayerMother.playerName;
-import static trivia.PlayerMother.playerNames;
 import static trivia.constants.GameConstants.MAX_PLAYER_COUNT;
 import static trivia.constants.GameConstants.PLACE_COUNT;
+import static trivia.object.PlayerMother.playerName;
+import static trivia.object.PlayerMother.playerNames;
 
 class PlayerManagerTest {
 

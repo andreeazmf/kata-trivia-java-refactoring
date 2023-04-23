@@ -11,7 +11,7 @@ import trivia.player.Player;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static trivia.PlayerMother.players;
+import static trivia.object.PlayerMother.players;
 
 class GameBetterTest {
 
