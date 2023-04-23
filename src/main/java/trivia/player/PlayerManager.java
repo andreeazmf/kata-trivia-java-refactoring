@@ -22,7 +22,7 @@ public class PlayerManager {
     }
 
     public boolean add(String playerName) {
-        if (players.size() == maxPlayerCount) {
+        if (players.size() == maxPlayerCount || playerNameExists(playerName)) {
             return false;
         }
 
@@ -97,6 +97,11 @@ public class PlayerManager {
 
     public boolean canCurrentPlayEarnCoins() {
         return players.get(currentPlayerIndex).canEarnCoins();
+    }
+
+    private boolean playerNameExists(String playerName) {
+        return players.stream()
+                .anyMatch(player -> player.getName().equalsIgnoreCase(playerName));
     }
 
     private void logNewPlayerAdded(String playerName) {
