@@ -47,7 +47,7 @@ public class Player {
     public void sendToPenaltyBox() {
         isInPenaltyBox = true;
         isGettingOutOfPenaltyBox = false;
-        logSentToPenaltyBox();
+        logSendToPenaltyBox();
     }
 
     public void setIsGettingOutOfPenaltyBox() {
@@ -99,7 +99,7 @@ public class Player {
         log.info(name + " now has " + coins + " Gold Coins.");
     }
 
-    private void logSentToPenaltyBox() {
+    private void logSendToPenaltyBox() {
         log.info(name + " was sent to the penalty box");
     }
 
