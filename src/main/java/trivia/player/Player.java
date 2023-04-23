@@ -1,14 +1,20 @@
 package trivia.player;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import trivia.question.QuestionCategory;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static trivia.constants.GameConstants.WINNING_SCORE;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class Player {
 
@@ -18,6 +24,21 @@ public class Player {
     private boolean isInPenaltyBox;
     private boolean isGettingOutOfPenaltyBox;
     private int winningStreak;
+    private final Map<QuestionCategory, Integer> wrongAnswersCount;
+
+    public static Player init(String name) {
+        return new Player(name, initWrongAnswersCount());
+    }
+
+    private static Map<QuestionCategory, Integer> initWrongAnswersCount() {
+        return Stream.of(QuestionCategory.values())
+                .collect(Collectors.toMap(
+                        questionCategory -> questionCategory,
+                        questionCategory -> 0,
+                        (v1, v2) -> v1,
+                        () -> new EnumMap<>(QuestionCategory.class)
+                ));
+    }
 
     public void obtainBenefits() {
         winningStreak++;
@@ -37,18 +58,11 @@ public class Player {
     }
 
     public void gaveWrongAnswer() {
-        if (winningStreak > 0) {
-            winningStreak = 0;
-            return;
+        wrongAnswersCount.compute(getCurrentQuestionCategory(), this::updateWrongAnswerCount);
+
+        if (shouldBeSendToPenaltyBox()) {
+            sendToPenaltyBox();
         }
-
-        sendToPenaltyBox();
-    }
-
-    public void sendToPenaltyBox() {
-        isInPenaltyBox = true;
-        isGettingOutOfPenaltyBox = false;
-        logSendToPenaltyBox();
     }
 
     public QuestionCategory getCurrentQuestionCategory() {
@@ -61,8 +75,10 @@ public class Player {
                 return QuestionCategory.SCIENCE;
             case 2:
                 return QuestionCategory.SPORTS;
-            default:
+            case 3:
                 return QuestionCategory.ROCK;
+            default:
+                return QuestionCategory.GEOGRAPHY;
         }
     }
 
@@ -97,6 +113,34 @@ public class Player {
 
     public boolean isWinner() {
         return coins >= WINNING_SCORE;
+    }
+
+    private int updateWrongAnswerCount(QuestionCategory questionCategory, Integer count) {
+        if (count == null) {
+            return 1;
+        }
+
+        return count + 1;
+    }
+
+    private boolean shouldBeSendToPenaltyBox() {
+        if (winningStreak > 0) {
+            winningStreak = 0;
+            return false;
+        }
+
+        return hasTwoOrMoreWrongAnswersFromSameCategory();
+    }
+
+    private boolean hasTwoOrMoreWrongAnswersFromSameCategory() {
+        return wrongAnswersCount.entrySet().stream()
+                .anyMatch(entry -> entry.getValue() >= 2);
+    }
+
+    private void sendToPenaltyBox() {
+        isInPenaltyBox = true;
+        isGettingOutOfPenaltyBox = false;
+        logSendToPenaltyBox();
     }
 
     private void earnOneCoin() {

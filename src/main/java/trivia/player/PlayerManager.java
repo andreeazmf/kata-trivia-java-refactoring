@@ -26,7 +26,7 @@ public class PlayerManager {
             return false;
         }
 
-        players.add(new Player(playerName));
+        players.add(Player.init(playerName));
         logNewPlayerAdded(playerName);
         return true;
     }

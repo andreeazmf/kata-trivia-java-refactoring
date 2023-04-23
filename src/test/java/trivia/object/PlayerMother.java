@@ -25,6 +25,6 @@ public class PlayerMother {
     }
 
     public static Player player(int index) {
-        return new Player(playerName(index));
+        return Player.init(playerName(index));
     }
 }

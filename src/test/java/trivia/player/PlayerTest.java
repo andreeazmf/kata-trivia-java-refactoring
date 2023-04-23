@@ -2,7 +2,9 @@ package trivia.player;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import trivia.question.QuestionCategory;
 
+import static trivia.constants.GameConstants.PLACE_COUNT;
 import static trivia.object.PlayerMother.player;
 
 class PlayerTest {
@@ -10,10 +12,21 @@ class PlayerTest {
     private final Player player = player(1);
 
     @Test
-    void test() {
+    void shouldBeInPenaltyBoxAfterTwoWrongAnswersFromSameCategory() {
+        player.gaveWrongAnswer();
         player.gaveWrongAnswer();
 
         Assertions.assertTrue(player.isInPenaltyBox());
+    }
+
+    @Test
+    void shouldNotBeInPenaltyBoxAfterOneWrongAnswerFromSingleCategory() {
+        for (int i = 0; i < QuestionCategory.values().length; i++) {
+            player.gaveWrongAnswer();
+            player.move(1, PLACE_COUNT);
+        }
+
+        Assertions.assertFalse(player.isInPenaltyBox());
     }
 
     @Test
