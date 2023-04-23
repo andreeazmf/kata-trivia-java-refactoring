@@ -35,10 +35,6 @@ public class PlayerManager {
         return players.size();
     }
 
-    public Player getCurrentPlayer() {
-        return players.get(currentPlayerIndex);
-    }
-
     public String getCurrentPlayerName() {
         return players.get(currentPlayerIndex).getName();
     }

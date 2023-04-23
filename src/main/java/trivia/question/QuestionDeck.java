@@ -2,6 +2,7 @@ package trivia.question;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class QuestionDeck {
 
     private final Queue<Question> questions;
@@ -43,6 +45,6 @@ public class QuestionDeck {
     }
 
     public void askQuestion() {
-        System.out.println(questions.remove());
+        log.info(String.valueOf(questions.remove()));
     }
 }
